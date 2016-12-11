@@ -124,7 +124,7 @@ public class RechercherBehaviour extends Behaviour {
                     cfp.setConversationId("produit");
                     cfp.setReplyWith("cfp" + System.currentTimeMillis()); // Unique
                     // value
-                    clientAgent.send(cfp);
+                    clientAgent.send(cfp); 
                 }
                 System.out.println("Liste de course "+listeDeCourses+" envoyé aux supermarches");
                 // Prepare the template to get proposals    
@@ -144,9 +144,10 @@ public class RechercherBehaviour extends Behaviour {
 
                         try {
                             ResultatRecherche rs = (ResultatRecherche) reply.getContentObject();
-                            System.out.println("liste des produits " + rs.produitList.size());
-                            System.out.println("liste des produits " + rs.produitList.get(0).descriptionProduit);
-                            System.out.println("liste des produits " + rs.produitList.get(1).descriptionProduit);
+                            System.out.println("marque prod " + rs.produitList.get(0).marque);
+                            System.out.println("prix prod " + rs.produitList.get(0).prixProduit);
+                            System.out.println("nomprod " + rs.produitList.get(0).nomProduit);
+                            System.out.println("categorie " + rs.produitList.get(0).idCategorie);
                         } catch (UnreadableException e) {
                             e.printStackTrace();
                         }

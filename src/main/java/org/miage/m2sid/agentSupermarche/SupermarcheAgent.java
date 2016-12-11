@@ -90,7 +90,6 @@ public class SupermarcheAgent extends Agent {
     }
 
     private class ProposerOffre extends CyclicBehaviour {
-
         public void action() {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive(mt);
@@ -145,7 +144,7 @@ public class SupermarcheAgent extends Agent {
                         reply.setContentObject(rr);
 
                     }
-                    myAgent.send(reply);
+                    send(reply);
 
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
