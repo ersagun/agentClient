@@ -81,16 +81,18 @@ public class TrouverClientBehaviour extends OneShotBehaviour {
 		template.addServices(sd);
 		try {
 			DFAgentDescription[] result = DFService.search(myAgent, template);
-			System.out.println("Les agents trouvés : ");
-			clientAgent.setSellerAgents(new AID[result.length]);
+			System.out.println("Les agents clients trouvés : ");
+			clientAgent.setClientAgents(new AID[result.length]);
+                        AID[] temp = new AID[result.length];
 			for (int i = 0; i < result.length; ++i) {
-				clientAgent.getSellerAgents()[i] = result[i].getName();
-				System.out.println(clientAgent.getSellerAgents()[i].getName());
+				temp[i] = result[i].getName();
 			}
+                        clientAgent.setClientAgents(temp);
 		} catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
-		myAgent.addBehaviour(new RoutineEbdomadaireBehaviour(clientAgent, (HashMap)clientAgent.getCourses()));
+                
+		myAgent.addBehaviour(new RoutineEbdomadaireBehaviour(clientAgent));
 		//myAgent.addBehaviour(new RechercherBehaviour(clientAgent,listeDeCourses));
 	}
 

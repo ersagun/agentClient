@@ -10,6 +10,7 @@ import jade.core.ProfileImpl;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import java.util.HashMap;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.miage.m2sid.agentClient.ClientAgent;
@@ -62,6 +63,7 @@ public class Gui extends javax.swing.JFrame {
         btAjouter = new javax.swing.JButton();
         btSupprimer = new javax.swing.JButton();
         btEnvoyer = new javax.swing.JButton();
+        resultats = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,6 +168,8 @@ public class Gui extends javax.swing.JFrame {
             }
         });
 
+        resultats.setName("resultats"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -177,30 +181,34 @@ public class Gui extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btSupprimer)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btAjouter)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btSupprimer))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resultats)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
+                .addContainerGap(68, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(99, 99, 99)
                         .addComponent(btAjouter)
                         .addGap(35, 35, 35)
                         .addComponent(btSupprimer)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(146, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
-                        .addComponent(btEnvoyer)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btEnvoyer)
+                            .addComponent(resultats))
                         .addContainerGap())))
         );
 
@@ -312,9 +320,18 @@ public class Gui extends javax.swing.JFrame {
                 tableProduits.setModel(new DefaultTableModel(data, title));
                 
             }
-        });
+        });    
     }
 
+    public JLabel getResultats() {
+        return resultats;
+    }
+
+    public void setResultats(String resultats) {
+        this.resultats.setText(resultats);
+    }
+    
+      
     HashMap<Integer, Integer> mapCourses = new HashMap<>();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAjouter;
@@ -324,6 +341,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel resultats;
     private javax.swing.JTable tableCourses;
     private static javax.swing.JTable tableProduits;
     // End of variables declaration//GEN-END:variables

@@ -9,132 +9,156 @@ import org.miage.m2sid.agentClient.ClientAgent;
 
 import fr.miage.agents.api.model.Produit;
 import jade.core.AID;
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.JLabel;
 
-public class RoutineEbdomadaireBehaviour extends CyclicBehaviour {
+public class RoutineEbdomadaireBehaviour extends OneShotBehaviour {
 
     /* TODO ajouter les attributs permettant de communiquer avec les autres agents */
     ClientAgent clientAgent;
     //HashMap<Long, Integer> listeDeCourses;
-    
 
     public RoutineEbdomadaireBehaviour(ClientAgent maitre) {
         super();
         this.clientAgent = maitre;
     }
 
-    RoutineEbdomadaireBehaviour(ClientAgent client, HashMap<Long, Integer> ldc) {
-        super();
-        this.clientAgent = client;
-        this.clientAgent.setCourses(ldc);
-    }
-
     public void action() {
+            // on récupère la liste des autres agents en vie
+            List<Supermarche> supermarches = listerSupermarche();
+            if (!supermarches.isEmpty()) {
 
-        // on récupère la liste des autres agents en vie
-        List<Supermarche> supermarches = listerSupermarche();
-        //generateCourse();
+            //generateCourse();
+            // on demande aux supermarches les prix pour les produits qui nous interessent
+            /* =============================GET INFO SUPERMARCHE===================================== */
+            for (Supermarche supermarche : supermarches) {
+                float distance = supermarche.getDistance();
+                supermarche.distance = distance;
+                // on compte les produits disponibles ainsi que le prixtotal
+                System.out.println("supermarche charlie : " + supermarche.getAid().getName());
 
-        // on demande aux supermarches les prix pour les produits qui nous interessent
-        /* =============================GET INFO SUPERMARCHE===================================== */
-        for (Supermarche supermarche : supermarches) {
-            float distance = supermarche.getDistance();
-
-            supermarche.distance = distance;
-            // on compte les produits disponibles ainsi que le prixtotal
-            for (Map.Entry<Long, Integer> entry : clientAgent.getCourses().entrySet()) {
-                Long idProduit = entry.getKey();
-                //int quantite = entry.getValue();
-                Produit resultat = supermarche.rechercher(idProduit);
-                if (!(resultat == null)) {
-                    supermarche.produits.add(resultat);
+                Iterator i = clientAgent.getCourses().keySet().iterator();
+                Integer cle;
+                Integer val = 0;
+                while (i.hasNext()) {
+                    cle = (Integer) i.next();
+                    val = (Integer) clientAgent.getCourses().get(cle);
+                    Long idProduit = Long.parseLong(String.valueOf(cle));
+                    Produit resultat = supermarche.rechercher(idProduit);
+                    if (!(resultat == null)) {
+                        supermarche.produits.add(resultat);
+                    }
                 }
-            }
-        }
 
-        /* ================================GET BEST SUPERMARCHE======================================== */
-        clientAgent.setSupermarcheMin(supermarches.get(0));
-        // on garde le supermarché le moins cher
-        for (Supermarche supermarche : supermarches) {
-            if (clientAgent.getSupermarcheMin().nbProduit() == supermarche.nbProduit()) {
-                if (clientAgent.getSupermarcheMin().prixTotal() > supermarche.prixTotal()) {
+            }
+            /* ================================GET BEST SUPERMARCHE======================================== */
+            clientAgent.setSupermarcheMin(supermarches.get(0));
+            // on garde le supermarché le moins cher
+            for (Supermarche supermarche : supermarches) {
+                if (clientAgent.getSupermarcheMin().nbProduit() == supermarche.nbProduit()) {
+                    if (clientAgent.getSupermarcheMin().prixTotal() > supermarche.prixTotal()) {
+                        clientAgent.setSupermarcheMin(supermarche);
+                    }
+                } else if (clientAgent.getSupermarcheMin().nbProduit() > supermarche.nbProduit()) {
                     clientAgent.setSupermarcheMin(supermarche);
                 }
-            } else {
-                if (clientAgent.getSupermarcheMin().nbProduit() > supermarche.nbProduit()) {
-                    clientAgent.setSupermarcheMin(supermarche);
+            }
+
+            // on liste les produits indisponibles dans le supermarche
+            /* =================================GET PRODUITS INDISPONIBLES====================================== */
+            Iterator i = clientAgent.getCourses().keySet().iterator();
+            Integer cle;
+            Integer val = 0;
+            HashMap<Long, Integer> temp = new HashMap<Long, Integer>();
+            while (i.hasNext()) {
+                cle = (Integer) i.next();
+                val = (Integer) clientAgent.getCourses().get(cle);
+                Long idProduit = Long.parseLong(String.valueOf(cle));
+
+                int quantite = val;
+                if (clientAgent.getSupermarcheMin().produits.contains(idProduit)) {
+                    temp.put(idProduit, quantite);
                 }
+
             }
-        }
+            clientAgent.setProduitsRestant(temp);
 
-        // on liste les produits indisponibles dans le supermarche
-        /* =================================GET PRODUITS INDISPONIBLES====================================== */
-        for (Entry<Long, Integer> entry : clientAgent.getCourses().entrySet()) {
-            Long idProduit = entry.getKey();
-            int quantite = entry.getValue();
-            if (clientAgent.getSupermarcheMin().produits.contains(idProduit)) {
-                clientAgent.getProduitsRestant().put(idProduit, quantite);
-            }
+            /* =================================ECHANGES CLIENTS======================================== */
+            clientAgent.setDisponible(true);
 
-        }
+            // on envois un message a chaque client un par un pour savoir s'ils n'ont pas un des produits qui nous manque
+            List<Client> clients = listerClient();
 
-        /* =================================ECHANGES CLIENTS======================================== */
-        clientAgent.setDisponible(true);
+            // on demande aux clients les prix pour les produits qui nous interessent et on retire les echanges fructueux
+            // des produits manquants
+            if (!clients.isEmpty()) {
+                for (Client client : clients) {
+                    for (Entry<Long, Integer> entry : clientAgent.getProduitsRestant().entrySet()) {
+                        Long idProduit = entry.getKey();
+                        Integer quantite = entry.getValue();
+                        HashMap<Produit, Integer> echange = client.askProduit(idProduit, quantite);
+                        for (Entry<Produit, Integer> entry2 : echange.entrySet()) {
+                            Produit produit = entry2.getKey();
+                            Integer quantite2 = entry2.getValue();
 
-        // on envois un message a chaque client un par un pour savoir s'ils n'ont pas un des produits qui nous manque
-        List<Client> clients = listerClient();
-
-        // on demande aux clients les prix pour les produits qui nous interessent et on retire les echanges fructueux
-        // des produits manquants
-        for (Client client : clients) {
-            for (Entry<Long, Integer> entry : clientAgent.getProduitsRestant().entrySet()) {
-                Long idProduit = entry.getKey();
-                Integer quantite = entry.getValue();
-                HashMap<Produit, Integer> echange = client.askProduit(idProduit, quantite);
-                for (Entry<Produit, Integer> entry2 : echange.entrySet()) {
-                    Produit produit = entry2.getKey();
-                    Integer quantite2 = entry2.getValue();
-
-                    if (produit.idProduit == idProduit) {
-                        clientAgent.getProduitsRestant().replace(idProduit, clientAgent.getProduitsRestant().get(idProduit) - quantite2);
-                        clientAgent.getCourses().replace(idProduit, clientAgent.getProduitsRestant().get(idProduit) - quantite2);
+                            if (produit.idProduit == idProduit) {
+                                clientAgent.getProduitsRestant().replace(idProduit, clientAgent.getProduitsRestant().get(idProduit) - quantite2);
+                                clientAgent.getCourses().replace(idProduit, clientAgent.getProduitsRestant().get(idProduit) - quantite2);
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        clientAgent.setDisponible(false);
-        /*================================ACHAT SUPERMARCHE=====================================*/
+            clientAgent.setDisponible(false);
+            /*================================ACHAT SUPERMARCHE=====================================*/
 
  /*-------------------------------ACHAT PERSONNEL-------------------------------------*/
-        // on achete les produits du supermarche le moins cher
-        Map<Produit, Integer> resultatAchat = clientAgent.getSupermarcheMin().acheterCourses(clientAgent.getCourses());
-        // on supprime les produits achetés de la liste
-        for (Entry<Produit, Integer> entry : resultatAchat.entrySet()) {
-            Produit Produit = entry.getKey();
-            int quantite = entry.getValue();
-            clientAgent.getCourses().replace(Produit.idProduit, clientAgent.getCourses().get(Produit.idProduit) - quantite);
-            if (clientAgent.getCourses().get(Produit.idProduit) == 0) {
-                clientAgent.getCourses().remove(Produit.idProduit);
-            }
+            // on achete les produits du supermarche le moins cher
+            Map<Produit, Integer> resultatAchat = clientAgent.getSupermarcheMin().acheterCourses(clientAgent.getCourses());
+            clientAgent.setProduitAchete((HashMap)resultatAchat);
+            // on supprime les produits achetés de la liste
+            for (Entry<Produit, Integer> entry : resultatAchat.entrySet()) {
+                Produit produit = entry.getKey();
+                int quantite = entry.getValue();
+                System.out.println("SAMER"+clientAgent.getCourses().toString());
+                clientAgent.getCourses().replace(produit.idProduit, clientAgent.getCourses().get(produit.idProduit) - quantite);
+                if (clientAgent.getCourses().get(produit.idProduit) == 0) {
+                    clientAgent.getCourses().remove(produit.idProduit);
+                }
 
-        }
-        /*-------------------------------ACHAT ECHANGE-------------------------------------*/
-        resultatAchat = clientAgent.getSupermarcheMin().acheterCourses(clientAgent.getProduitEchange());
-        // on supprime les produits achetés de la liste
-        for (Entry<Produit, Integer> entry : resultatAchat.entrySet()) {
-            Produit Produit = entry.getKey();
-            int quantite = entry.getValue();
-            clientAgent.getProduitEchange().replace(Produit.idProduit, clientAgent.getProduitEchange().get(Produit.idProduit) - quantite);
-            if (clientAgent.getProduitEchange().get(Produit.idProduit) == 0) {
-                clientAgent.getProduitEchange().remove(Produit.idProduit);
             }
+            /*-------------------------------ACHAT ECHANGE-------------------------------------*/
+            resultatAchat = clientAgent.getSupermarcheMin().acheterCourses(clientAgent.getProduitEchange());
+            
+            
+            clientAgent.setListeProduitEchange((HashMap)resultatAchat);            
+            // on supprime les produits achetés de la liste
+            for (Entry<Produit, Integer> entry : resultatAchat.entrySet()) {
+                Produit Produit = entry.getKey();
+                int quantite = entry.getValue();
+                clientAgent.getProduitEchange().replace(Produit.idProduit, clientAgent.getProduitEchange().get(Produit.idProduit) - quantite);
+                if (clientAgent.getProduitEchange().get(Produit.idProduit) == 0) {
+                    clientAgent.getProduitEchange().remove(Produit.idProduit);
+                }
 
-        }
-        // TO/!\Impossible/!\DO echanger les produits 
-        clientAgent.setSupermarcheMin(null);
-        clientAgent.setProduitsRestant(new HashMap<Long, Integer>());
+            }
+            // TO/!\Impossible/!\DO echanger les produits 
+            clientAgent.setSupermarcheMin(null);
+            clientAgent.setProduitsRestant(new HashMap<Long, Integer>());
+            String yolos="Vous avez acheté les produits suivant dans le supermarché "+clientAgent.getSupermarcheMin().getAid().getName()+": \n";
+            
+            for(Entry<Produit, Integer> entry3 : clientAgent.getProduitAchete().entrySet()) {
+                Produit cle2 = entry3.getKey();
+                Integer valeur = entry3.getValue();
+                yolos+= "Nom produit : "+cle2.nomProduit+", "+"Prix : "+cle2.prixProduit+"; la quantite: "+valeur+"/n";
+            }        
+            clientAgent.getGui().setResultats(yolos);
+                System.out.println("SAAAAAAAMEEEEEERE "+yolos);
+                
+        }else {System.err.println("Il n'existe pas de supermarché sur le platforme jad ");}
     }
 
     /*
@@ -142,26 +166,22 @@ public class RoutineEbdomadaireBehaviour extends CyclicBehaviour {
 	 * existants
      */
     /**
-    private void generateCourse() {
-        int max = 20;
-        int min = 1;
-        int maxcpt = (int) (Math.random() * (max - min) + min);
-        for (int cpt = 0; cpt < maxcpt; cpt++) {
-            max = 149;
-            min = 1;
-            clientAgent.getCourses().put((Long) (Math.random() * (max - min) + min), (int) (Math.random() * (max - min) + min));
-        }
-    }**/
+     * private void generateCourse() { int max = 20; int min = 1; int maxcpt =
+     * (int) (Math.random() * (max - min) + min); for (int cpt = 0; cpt <
+     * maxcpt; cpt++) { max = 149; min = 1; clientAgent.getCourses().put((Long)
+     * (Math.random() * (max - min) + min), (int) (Math.random() * (max - min) +
+     * min)); } }*
+     */
 
     /*
 	 * retourne la liste des supermarchés
      */
     private List<Supermarche> listerSupermarche() {
-       AID[] aid = clientAgent.getSellerAgents();
-       List<Supermarche> ls=new ArrayList<Supermarche>();
-       for(int i=0;i<aid.length;i++){
-           ls.add(new Supermarche(aid[i],clientAgent));
-       }
+        AID[] aid = clientAgent.getSellerAgents();
+        List<Supermarche> ls = new ArrayList<Supermarche>();
+        for (int i = 0; i < aid.length; i++) {
+            ls.add(new Supermarche(aid[i], clientAgent));
+        }
         return ls;
     }
 
@@ -169,11 +189,11 @@ public class RoutineEbdomadaireBehaviour extends CyclicBehaviour {
 	 * retourne la liste des clients
      */
     private List<Client> listerClient() {
-        AID[] aid = clientAgent.getSellerAgents();
-       List<Client> ls=new ArrayList<Client>();
-       for(int i=0;i<aid.length;i++){
-           ls.add(new Client(aid[i],clientAgent));
-       }
+        AID[] aid = clientAgent.getClientAgents();
+        List<Client> ls = new ArrayList<Client>();
+        for (int i = 0; i < aid.length; i++) {
+            ls.add(new Client(aid[i], clientAgent));
+        }
         return ls;
     }
 

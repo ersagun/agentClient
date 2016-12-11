@@ -1,6 +1,5 @@
 package org.miage.m2sid.agentSupermarche;
 
-import java.io.IOException;
 import java.util.ArrayList;
 /**
  * ***************************************************************
@@ -27,6 +26,8 @@ import fr.miage.agents.api.message.Message;
 import fr.miage.agents.api.message.TypeMessage;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.recherche.ResultatRecherche;
+import fr.miage.agents.api.message.relationclientsupermarche.Achat;
+import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
 import fr.miage.agents.api.model.Categorie;
 import fr.miage.agents.api.model.Produit;
 import jade.core.Agent;
@@ -37,7 +38,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.lang.acl.UnreadableException;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class SupermarcheAgent extends Agent {
     // The catalogue of books for sale (maps the title of a book to its price)
@@ -90,6 +92,7 @@ public class SupermarcheAgent extends Agent {
     }
 
     private class ProposerOffre extends CyclicBehaviour {
+
         public void action() {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
             ACLMessage msg = myAgent.receive(mt);
@@ -99,52 +102,90 @@ public class SupermarcheAgent extends Agent {
                 try {
                     m = (Message) msg.getContentObject();
                     ACLMessage reply = msg.createReply();
-                    System.out.println("YOLOOOO ya un message "+ m.type);
+                    System.out.println("YOLOOOO ya un message " + m.type);
                     if (m.type == TypeMessage.Recherche) {
                         Rechercher r = (Rechercher) m;
                         System.out.println(m.type);
                         System.out.println(r.nomCategorie);
-                        
+
                         ResultatRecherche rr = new ResultatRecherche();
                         rr.produitList = new ArrayList<Produit>();
-                        Produit p=null;
-                        if(r.idProduit==1){
-                        p = new Produit();
-                        p.descriptionProduit = "yolo sa mere la descri";
-                        Categorie c = new Categorie();
-                        c.idCategorie = 11;
-                        c.nomCategorie = "sa mere";
-                        p.idCategorie = c;
-                        p.idProduit = 1;
-                        p.marque = "heineken";
-                        p.nomProduit = "nike sa mere";
-                        p.prixProduit = 30; 
-                         rr.produitList.add(p);
+                        Produit p = null;
+                        if (r.idProduit == 1) {
+                            p = new Produit();
+                            p.descriptionProduit = "description mousse a raser";
+                            Categorie c = new Categorie();
+                            c.idCategorie = 11;
+                            c.nomCategorie = "hygiene";
+                            p.idCategorie = c;
+                            p.idProduit = 1;
+                            p.marque = "gillet";
+                            p.nomProduit = "mac 12 3 ki pike pa";
+                            p.prixProduit = 31;
+                            rr.produitList.add(p);
                         }
-                        
-                        Produit p2=null;
-                        if(r.idProduit==2){
-                        p2 = new Produit();
-                        p2.descriptionProduit = "yolo sa mere la descri2";
-                        Categorie c2 = new Categorie();
-                        c2.idCategorie = 112;
-                        c2.nomCategorie = "sa mere2";
-                        p2.idCategorie = c2;
-                        p2.idProduit = 2;
-                        p2.marque = "heineken2";
-                        p2.nomProduit = "nike sa mere2";
-                        p2.prixProduit = 30;
-                        rr.produitList.add(p2);
+
+                        Produit p2 = null;
+                        if (r.idProduit == 2) {
+                            p2 = new Produit();
+                            p2.descriptionProduit = "gameboy";
+                            Categorie c2 = new Categorie();
+                            c2.idCategorie = 112;
+                            c2.nomCategorie = "lubrifiant";
+                            p2.idCategorie = c2;
+                            p2.idProduit = 2;
+                            p2.marque = "nintendo vaselin";
+                            p2.nomProduit = "gameboy vaselin color";
+                            p2.prixProduit = 34;
+                            rr.produitList.add(p2);
                         }
-                        
-                        
-                       
-                       
+
                         reply.setPerformative(ACLMessage.PROPOSE);
                         reply.setContentObject(rr);
-
+                        send(reply);
                     }
-                    send(reply);
+
+                    if (m.type == TypeMessage.AchatClient) {
+                        Achat a = (Achat) m;
+                        System.out.println(m.type);
+                        // System.out.println(a.nomCategorie);
+
+                        ResultatAchat ra = new ResultatAchat();
+                        HashMap<Produit, Integer> courses = new HashMap<Produit, Integer>();
+
+                        Produit p = new Produit();
+
+                        Iterator i = a.listeCourses.keySet().iterator();
+
+                        Integer cle;
+                        Integer val = 0;
+                        HashMap<Produit, Integer> temp = new HashMap<Produit, Integer>();
+                        while (i.hasNext()) {
+                            cle = (Integer) i.next();
+                            val = (Integer) a.listeCourses.get(cle);
+                            Long idProduit = Long.parseLong(String.valueOf(cle));
+                            int quantite = val;
+                            
+                            p = new Produit();
+                            p.descriptionProduit = "description mousse a raser";
+                            Categorie c = new Categorie();
+                            c.idCategorie = 11;
+                            c.nomCategorie = "hygiene";
+                            p.idCategorie = c;
+                            p.idProduit = idProduit;
+                            p.marque = "gillet";
+                            p.nomProduit = "mac 12 3 ki pike pa";
+                            p.prixProduit = 31;
+                            temp.put(p,quantite);         
+                        }
+                        
+                        ra.courses = temp;
+                        reply.setPerformative(ACLMessage.PROPOSE);
+                        reply.setContentObject(ra);
+
+                        send(reply);
+                        
+                    }
 
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

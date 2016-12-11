@@ -15,19 +15,7 @@ import java.util.HashMap;
 public class TrouverSupermarcheBehaviour extends OneShotBehaviour {
 
     public ClientAgent getClient() {
-        return client;
-    }
-
-    public void setClient(ClientAgent client) {
-        this.client = client;
-    }
-
-    public HashMap<Long, Integer> getListeDeCourses() {
-        return listeDeCourses;
-    }
-
-    public void setListeDeCourses(HashMap<Long, Integer> listeDeCourses) {
-        this.listeDeCourses = listeDeCourses;
+        return clientAgent;
     }
 
     public Agent getMyAgent() {
@@ -54,39 +42,35 @@ public class TrouverSupermarcheBehaviour extends OneShotBehaviour {
         this.parent = parent;
     }
 
-	private ClientAgent client;
-        private HashMap<Long,Integer> listeDeCourses;
-	
-	public TrouverSupermarcheBehaviour(Agent a) {
-		client= (ClientAgent) a;
-	}
-        public TrouverSupermarcheBehaviour(Agent a, HashMap<Long,Integer> ldc) {
-		client= (ClientAgent) a;
-                listeDeCourses=ldc;
-	}
-	@Override
-	public void action() {
-                System.out.println("Trouver supermarcher : "+ listeDeCourses);
-		// Update the list of seller agents
-		DFAgentDescription template = new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();
-		// sd.setType("book-selling");
-		template.addServices(sd);
-		try {
-			DFAgentDescription[] result = DFService.search(myAgent, template);
-			System.out.println("Les agents trouvés : ");
-			client.setSellerAgents(new AID[result.length]);
-			for (int i = 0; i < result.length; ++i) {
-				client.getSellerAgents()[i] = result[i].getName();
-				System.out.println(client.getSellerAgents()[i].getName());
-			}
-		} catch (FIPAException fe) {
-			fe.printStackTrace();
-		}
-		myAgent.addBehaviour(new RoutineEbdomadaireBehaviour(client,listeDeCourses));
-		//myAgent.addBehaviour(new RechercherBehaviour(client,listeDeCourses));
-	}
+    private ClientAgent clientAgent;
 
-	
-	
+    public TrouverSupermarcheBehaviour(Agent a) {
+        clientAgent = (ClientAgent) a;
+    }
+
+    @Override
+    public void action() {
+        System.out.println("Trouver supermarcher : " + clientAgent.getCourses());
+        // Update the list of seller agents
+        DFAgentDescription template = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        // sd.setType("book-selling");
+        template.addServices(sd);
+        try {
+            DFAgentDescription[] result = DFService.search(myAgent, template);
+            System.out.println("Les agents supermarché trouvés : ");
+            clientAgent.setSellerAgents(new AID[result.length]);
+            AID[] temp = new AID[result.length];
+			for (int i = 0; i < result.length; ++i) {
+				temp[i] = result[i].getName();
+			}
+                        clientAgent.setSellerAgents(temp);
+        } catch (FIPAException fe) {
+            fe.printStackTrace();
+        }
+        myAgent.addBehaviour(new TrouverClientBehaviour(clientAgent));
+        //myAgent.addBehaviour(new RoutineEbdomadaireBehaviour(clientAgent));
+        //myAgent.addBehaviour(new RechercherBehaviour(clientAgent,listeDeCourses));
+    }
+
 }

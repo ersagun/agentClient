@@ -1,5 +1,6 @@
 package org.miage.m2sid.agentClient;
 
+import fr.miage.agents.api.model.Produit;
 import java.util.Map;
 
 import org.miage.m2sid.agentClient.behaviour.TrouverSupermarcheBehaviour;
@@ -18,11 +19,21 @@ public class ClientAgent extends Agent {
 
     private Gui gui;
 
-    private Map<Long, Integer> courses;
+    private HashMap<Long, Integer> courses;
     private Supermarche supermarcheMin;
     private Map<Long, Integer> produitsRestant;//produit indisponible au supermarché
     private Boolean disponible;//l'état actuel de l'agent (indisponible ou disponible(pret a communiquer avec d'aurtres clients)
     private Map<Long, Integer> produitEchange;//liste des produits a acheter
+    private HashMap<Produit, Integer> produitAchete;
+    private HashMap<Produit, Integer> listeProduitEchange;
+
+    public HashMap<Produit, Integer> getListeProduitEchange() {
+        return listeProduitEchange;
+    }
+
+    public void setListeProduitEchange(HashMap<Produit, Integer> listeProduitEchange) {
+        this.listeProduitEchange = listeProduitEchange;
+    }
 
     public Gui getGui() {
         return gui;
@@ -36,7 +47,7 @@ public class ClientAgent extends Agent {
         return courses;
     }
 
-    public void setCourses(Map<Long, Integer> courses) {
+    public void setCourses(HashMap<Long, Integer> courses) {
         this.courses = courses;
     }
 
@@ -79,7 +90,8 @@ public class ClientAgent extends Agent {
     
 
     public void demandeProduit(HashMap<Integer,Integer> listeDeCourses ) {
-        addBehaviour(new TrouverSupermarcheBehaviour(this, (HashMap)this.courses));
+        this.courses=(HashMap)listeDeCourses;
+        addBehaviour(new TrouverSupermarcheBehaviour(this));
     }
 
     protected void takeDown() {
@@ -98,12 +110,24 @@ public class ClientAgent extends Agent {
         this.sellerAgents = sellerAgents;
     }
 
+    public HashMap<Produit, Integer> getProduitAchete() {
+        return produitAchete;
+    }
+
+    public void setProduitAchete(HashMap<Produit, Integer> produitAchete) {
+        this.produitAchete = produitAchete;
+    }
+
     public int getRepliesCnt() {
         return repliesCnt;
     }
 
     public void setRepliesCnt(int repliesCnt) {
         this.repliesCnt = repliesCnt;
+    }
+
+    public void setClientAgents(AID[] temp) {
+    this.clientAgents=temp;    
     }
 
 }

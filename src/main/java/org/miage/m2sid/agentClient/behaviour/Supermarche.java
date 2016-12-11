@@ -37,6 +37,38 @@ public class Supermarche {
         produits = new ArrayList<Produit>();
     }
 
+    public AID getAid() {
+        return aid;
+    }
+
+    public void setAid(AID aid) {
+        this.aid = aid;
+    }
+
+    public ClientAgent getClientAgent() {
+        return clientAgent;
+    }
+
+    public void setClientAgent(ClientAgent clientAgent) {
+        this.clientAgent = clientAgent;
+    }
+
+    public MessageTemplate getMt() {
+        return mt;
+    }
+
+    public void setMt(MessageTemplate mt) {
+        this.mt = mt;
+    }
+
+    public List<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(List<Produit> produits) {
+        this.produits = produits;
+    }
+
     /*
 	 * [placeholder]retourne une valeur random entre 10 et 50
 	 * Retourne la distance à un supermarché
@@ -77,8 +109,8 @@ public class Supermarche {
         
         do
         {reply = clientAgent.receive(mt);}    
-        while(reply != null);
-         
+        while(reply == null);
+         System.out.println(reply);
               if (reply.getPerformative() == ACLMessage.PROPOSE) {
                         AID supermarcheChoisi = reply.getSender();
                         try {
@@ -145,7 +177,7 @@ public class Supermarche {
         
         do
         {reply = clientAgent.receive(mt);}    
-        while(reply != null);
+        while(reply == null);
          
               if (reply.getPerformative() == ACLMessage.PROPOSE) {
                         AID supermarcheChoisi = reply.getSender();
