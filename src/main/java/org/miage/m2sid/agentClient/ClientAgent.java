@@ -72,9 +72,9 @@ public class ClientAgent extends Agent {
     }
 
     protected void setup() {
-
+        gui=new Gui(this);
         System.out.println("Agent Client est  " + getAID().getName() + " prêt.");
-        addBehaviour(new TrouverSupermarcheBehaviour(this));
+      //  addBehaviour(new TrouverSupermarcheBehaviour(this));
 
     }
     

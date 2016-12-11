@@ -66,7 +66,7 @@ public class TrouverSupermarcheBehaviour extends OneShotBehaviour {
 	}
 	@Override
 	public void action() {
-		System.out.println("Trying to buy XXXX");
+                System.out.println("Trouver supermarcher : "+ listeDeCourses);
 		// Update the list of seller agents
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();

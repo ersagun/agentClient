@@ -120,12 +120,13 @@ public class RechercherBehaviour extends Behaviour {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-
+                    
                     cfp.setConversationId("produit");
                     cfp.setReplyWith("cfp" + System.currentTimeMillis()); // Unique
                     // value
                     clientAgent.send(cfp);
                 }
+                System.out.println("Liste de course "+listeDeCourses+" envoyé aux supermarches");
                 // Prepare the template to get proposals    
                 mt = MessageTemplate.and(MessageTemplate.MatchConversationId("produit"),
                         MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));

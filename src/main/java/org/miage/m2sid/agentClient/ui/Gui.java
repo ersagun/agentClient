@@ -28,8 +28,16 @@ public class Gui extends javax.swing.JFrame {
      */
     public Gui(Agent a ) {
         clientAgent=(ClientAgent)a;
-        initComponents();
-        
+        initComponents(); 
+        this.setVisible(true);
+                String title[] = new String[]{"Id", "Nom Produit"};
+                Object data[][] = new Object[][]{
+                    {"1", "Carotte"}, {"2", "Poireau"}, {"4", "Brie"}, {"5", "Comté"},
+                    {"6", "Lait"}, {"7", "Bière"}, {"8", "Eau"}, {"9", "Coca"}, {"10", "Javel"}
+                };
+
+                tableProduits.setModel(new DefaultTableModel(data, title));
+               
     }
 
     private Gui() {
@@ -239,19 +247,20 @@ public class Gui extends javax.swing.JFrame {
 
     private void btEnvoyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnvoyerActionPerformed
 
-        String adressIP = JOptionPane.showInputDialog("Donner l'adresse IP");
+     //   String adressIP = JOptionPane.showInputDialog("Donner l'adresse IP");
         
         try {
-
+/**
             jade.core.Runtime runtime = jade.core.Runtime.instance();
             ProfileImpl profileImpl = new ProfileImpl(false);
             profileImpl.setParameter(ProfileImpl.MAIN_HOST, adressIP);
             System.out.println("projagent1.Accueil.btLancerCliSellerActionPerformed() " + profileImpl);
             AgentContainer agentContainer = runtime.createAgentContainer(profileImpl);
             String className = ClientAgent.class.getName();
-            String nickname = "seller " + Math.floor(100 * Math.random() % 1000);
+            String nickname = "Supermarché " + Math.floor(100 * Math.random() % 1000);
             AgentController agentController = agentContainer.createNewAgent(nickname, className, new Object[]{});
             agentController.start();
+            System.out.println(mapCourses);**/
             clientAgent.demandeProduit(mapCourses);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getClass(),

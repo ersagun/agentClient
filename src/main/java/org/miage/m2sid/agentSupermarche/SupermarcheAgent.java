@@ -100,6 +100,7 @@ public class SupermarcheAgent extends Agent {
                 try {
                     m = (Message) msg.getContentObject();
                     ACLMessage reply = msg.createReply();
+                    System.out.println("YOLOOOO ya un message "+ m.type);
                     if (m.type == TypeMessage.Recherche) {
                         Rechercher r = (Rechercher) m;
                         System.out.println(m.type);
