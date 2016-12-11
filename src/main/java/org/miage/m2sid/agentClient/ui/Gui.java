@@ -17,12 +17,12 @@ import org.miage.m2sid.agentClient.ClientAgent;
  *
  * @author utilisateur
  */
-public class Produit extends javax.swing.JFrame {
+public class Gui extends javax.swing.JFrame {
 
     /**
      * Creates new form Produit
      */
-    public Produit() {
+    public Gui() {
         initComponents();
     }
 
@@ -268,20 +268,21 @@ public class Produit extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Produit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Produit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Produit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Produit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Produit().setVisible(true);
+                new Gui().setVisible(true);
                 String title[] = new String[]{"Id", "Nom Produit"};
                 Object data[][] = new Object[][]{
                     {"1", "Carotte"}, {"2", "Poireau"}, {"4", "Brie"}, {"5", "Comté"},
