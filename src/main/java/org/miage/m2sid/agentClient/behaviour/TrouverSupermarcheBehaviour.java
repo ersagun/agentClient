@@ -4,18 +4,65 @@ import org.miage.m2sid.agentClient.ClientAgent;
 
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.CompositeBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import java.util.HashMap;
 
 public class TrouverSupermarcheBehaviour extends OneShotBehaviour {
 
-	ClientAgent client;
+    public ClientAgent getClient() {
+        return client;
+    }
+
+    public void setClient(ClientAgent client) {
+        this.client = client;
+    }
+
+    public HashMap<Integer, Integer> getListeDeCourses() {
+        return listeDeCourses;
+    }
+
+    public void setListeDeCourses(HashMap<Integer, Integer> listeDeCourses) {
+        this.listeDeCourses = listeDeCourses;
+    }
+
+    public Agent getMyAgent() {
+        return myAgent;
+    }
+
+    public void setMyAgent(Agent myAgent) {
+        this.myAgent = myAgent;
+    }
+
+    public RunnableChangedEvent getMyEvent() {
+        return myEvent;
+    }
+
+    public void setMyEvent(RunnableChangedEvent myEvent) {
+        this.myEvent = myEvent;
+    }
+
+    public CompositeBehaviour getParent() {
+        return parent;
+    }
+
+    public void setParent(CompositeBehaviour parent) {
+        this.parent = parent;
+    }
+
+	private ClientAgent client;
+        private HashMap<Integer,Integer> listeDeCourses;
 	
 	public TrouverSupermarcheBehaviour(Agent a) {
 		client= (ClientAgent) a;
+	}
+        public TrouverSupermarcheBehaviour(Agent a, HashMap<Integer,Integer> ldc) {
+		client= (ClientAgent) a;
+                listeDeCourses=ldc;
 	}
 	@Override
 	public void action() {
@@ -37,7 +84,7 @@ public class TrouverSupermarcheBehaviour extends OneShotBehaviour {
 			fe.printStackTrace();
 		}
 		
-		myAgent.addBehaviour(new RechercherBehaviour(client));
+		myAgent.addBehaviour(new RechercherBehaviour(client,listeDeCourses));
 	}
 
 	

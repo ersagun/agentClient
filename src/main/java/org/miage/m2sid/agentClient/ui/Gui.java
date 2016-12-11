@@ -5,6 +5,7 @@
  */
 package org.miage.m2sid.agentClient.ui;
 
+import jade.core.Agent;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
@@ -13,16 +14,25 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.miage.m2sid.agentClient.ClientAgent;
 
+
 /**
  *
  * @author utilisateur
  */
 public class Gui extends javax.swing.JFrame {
 
+    
+    ClientAgent clientAgent; 
     /**
      * Creates new form Produit
      */
-    public Gui() {
+    public Gui(Agent a ) {
+        clientAgent=(ClientAgent)a;
+        initComponents();
+        
+    }
+
+    private Gui() {
         initComponents();
     }
 
@@ -242,6 +252,7 @@ public class Gui extends javax.swing.JFrame {
             String nickname = "seller " + Math.floor(100 * Math.random() % 1000);
             AgentController agentController = agentContainer.createNewAgent(nickname, className, new Object[]{});
             agentController.start();
+            clientAgent.demandeProduit(mapCourses);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getClass(),
                     "Information", JOptionPane.INFORMATION_MESSAGE);
