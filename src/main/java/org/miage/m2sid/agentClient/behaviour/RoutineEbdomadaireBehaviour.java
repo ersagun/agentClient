@@ -120,16 +120,49 @@ public class RoutineEbdomadaireBehaviour extends OneShotBehaviour {
             Map<Produit, Integer> resultatAchat = clientAgent.getSupermarcheMin().acheterCourses(clientAgent.getCourses());
             clientAgent.setProduitAchete((HashMap)resultatAchat);
             // on supprime les produits achetés de la liste
+            
+            Iterator i2 = resultatAchat.keySet().iterator();
+            Produit cle3;
+            Integer val3 = 0;
+           
+            while (i2.hasNext()) {
+                cle3 = (Produit) i2.next();
+                val3 = (Integer) ((HashMap)clientAgent.getCourses()).get(cle3.idProduit);
+              //  Long idProduit = Long.parseLong(String.valueOf(cle3.idProduit));
+
+                Produit produit = cle3;
+                int quantite = val3;
+                
+                System.out.println(produit.idProduit+"smare");
+                 System.out.println(clientAgent.getCourses());
+                
+               // 
+                //System.out.println((()clientAgent.getCourses()).get((Long)produit.idProduit));
+                Integer q;
+                HashMap hm =((HashMap)clientAgent.getCourses());
+                q = ((Integer)hm.get(produit.idProduit)) - quantite;
+                ((HashMap)clientAgent.getCourses()).put(produit.idProduit,q);
+                if (clientAgent.getCourses().get(produit.idProduit) == 0) {
+                    clientAgent.getCourses().remove(produit.idProduit);
+                }
+            }
+            
+            
+            /**
+            
             for (Entry<Produit, Integer> entry : resultatAchat.entrySet()) {
                 Produit produit = entry.getKey();
                 int quantite = entry.getValue();
-                System.out.println("SAMER"+clientAgent.getCourses().toString());
-                clientAgent.getCourses().replace(produit.idProduit, clientAgent.getCourses().get(produit.idProduit) - quantite);
+                System.out.println(produit.idProduit+"smare");
+                 System.out.println(clientAgent.getCourses());
+                System.out.println(clientAgent.getCourses().get(produit.idProduit));
+                clientAgent.getCourses().put(produit.idProduit,
+                        clientAgent.getCourses().get(produit.idProduit) - quantite);
                 if (clientAgent.getCourses().get(produit.idProduit) == 0) {
                     clientAgent.getCourses().remove(produit.idProduit);
                 }
 
-            }
+            }**/
             /*-------------------------------ACHAT ECHANGE-------------------------------------*/
             resultatAchat = clientAgent.getSupermarcheMin().acheterCourses(clientAgent.getProduitEchange());
             
