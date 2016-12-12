@@ -1,12 +1,13 @@
 package fr.miage.agents.agentclient.behaviour;
 
 import fr.miage.agents.agentclient.ClientAgent;
+import fr.miage.agents.api.message.recherche.Rechercher;
+import fr.miage.agents.api.message.recherche.ResultatRecherche;
 import java.io.IOException;
 
 
 
-import main.java.fr.miage.agents.api.message.recherche.Rechercher;
-import main.java.fr.miage.agents.api.message.recherche.ResultatRecherche;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;

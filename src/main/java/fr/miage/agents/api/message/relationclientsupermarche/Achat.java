@@ -1,10 +1,10 @@
-package main.java.fr.miage.agents.api.message.relationclientsupermarche;
+package fr.miage.agents.api.message.relationclientsupermarche;
 
 import java.util.Map;
 import java.util.UUID;
 
-import main.java.fr.miage.agents.api.message.Message;
-import main.java.fr.miage.agents.api.message.TypeMessage;
+import fr.miage.agents.api.message.Message;
+import fr.miage.agents.api.message.TypeMessage;
 
 /**
  * Created by nitix on 30/11/16.

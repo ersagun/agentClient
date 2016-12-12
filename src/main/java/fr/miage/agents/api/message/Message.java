@@ -1,4 +1,4 @@
-package main.java.fr.miage.agents.api.message;
+package fr.miage.agents.api.message;
 
 import java.io.Serializable;
 

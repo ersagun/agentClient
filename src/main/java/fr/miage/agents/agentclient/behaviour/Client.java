@@ -1,11 +1,12 @@
 package fr.miage.agents.agentclient.behaviour;
 
 import fr.miage.agents.agentclient.ClientAgent;
+import fr.miage.agents.api.message.interClients.DemandeEchange;
+import fr.miage.agents.api.message.interClients.ReponseEchange;
+import fr.miage.agents.api.model.Produit;
 import java.util.HashMap;
 
-import main.java.fr.miage.agents.api.message.interClients.DemandeEchange;
-import main.java.fr.miage.agents.api.message.interClients.ReponseEchange;
-import main.java.fr.miage.agents.api.model.Produit;
+
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

@@ -1,7 +1,7 @@
-package main.java.fr.miage.agents.api.message.production;
+package fr.miage.agents.api.message.production;
 
-import main.java.fr.miage.agents.api.message.Message;
-import main.java.fr.miage.agents.api.message.TypeMessage;
+import fr.miage.agents.api.message.Message;
+import fr.miage.agents.api.message.TypeMessage;
 
 /**
  * Created by Alexandre on 06/12/2016.

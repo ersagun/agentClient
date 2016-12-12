@@ -1,7 +1,7 @@
-package main.java.fr.miage.agents.api.message.util;
+package fr.miage.agents.api.message.util;
 
-import main.java.fr.miage.agents.api.message.Message;
-import main.java.fr.miage.agents.api.message.TypeMessage;
+import fr.miage.agents.api.message.Message;
+import fr.miage.agents.api.message.TypeMessage;
 
 import java.util.List;
 

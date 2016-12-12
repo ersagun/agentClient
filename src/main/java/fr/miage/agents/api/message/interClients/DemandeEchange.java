@@ -1,8 +1,8 @@
-package main.java.fr.miage.agents.api.message.interClients;
+package fr.miage.agents.api.message.interClients;
 
-import main.java.fr.miage.agents.api.message.Message;
-import main.java.fr.miage.agents.api.message.TypeMessage;
-import main.java.fr.miage.agents.api.model.Produit;
+import fr.miage.agents.api.message.Message;
+import fr.miage.agents.api.message.TypeMessage;
+import fr.miage.agents.api.model.Produit;
 
 /**
  * Created by jerome on 06/12/2016.

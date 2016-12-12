@@ -1,4 +1,4 @@
-package main.java.fr.miage.agents.api.message;
+package fr.miage.agents.api.message;
 
 /**
  * Created by nitix on 14/11/16.

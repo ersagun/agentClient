@@ -1,6 +1,6 @@
 package fr.miage.agents.agentclient;
 
-import main.java.fr.miage.agents.api.model.Produit;
+import fr.miage.agents.api.model.Produit;
 import java.util.Map;
 
 import fr.miage.agents.agentclient.behaviour.TrouverSupermarcheBehaviour;

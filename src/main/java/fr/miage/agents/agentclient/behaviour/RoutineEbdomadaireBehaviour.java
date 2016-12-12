@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 
 
-import main.java.fr.miage.agents.api.model.Produit;
+import fr.miage.agents.api.model.Produit;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import java.util.ArrayList;
