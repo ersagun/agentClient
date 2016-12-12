@@ -197,8 +197,8 @@ public class RoutineEbdomadaireBehaviour extends OneShotBehaviour {
     }
 
     /*
-	 * Génére une liste de produits souhaités ajoute entre 1 et 20 produit selectionné aleatoirement parmis les produits
-	 * existants
+        * Génére une liste de produits souhaités ajoute entre 1 et 20 produit selectionné aleatoirement parmis les produits
+        * existants
      */
     /**
      * private void generateCourse() { int max = 20; int min = 1; int maxcpt =
