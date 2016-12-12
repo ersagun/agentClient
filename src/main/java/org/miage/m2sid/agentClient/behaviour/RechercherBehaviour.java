@@ -1,12 +1,12 @@
 package org.miage.m2sid.agentClient.behaviour;
 
-import static fr.miage.agents.api.message.TypeMessage.ResultatRecherche;
+import static main.java.fr.miage.agents.api.message.TypeMessage.ResultatRecherche;
 import java.io.IOException;
 
 import org.miage.m2sid.agentClient.ClientAgent;
 
-import fr.miage.agents.api.message.recherche.Rechercher;
-import fr.miage.agents.api.message.recherche.ResultatRecherche;
+import main.java.fr.miage.agents.api.message.recherche.Rechercher;
+import main.java.fr.miage.agents.api.message.recherche.ResultatRecherche;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;

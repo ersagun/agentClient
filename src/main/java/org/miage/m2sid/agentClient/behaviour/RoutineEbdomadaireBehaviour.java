@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import org.miage.m2sid.agentClient.ClientAgent;
 
-import fr.miage.agents.api.model.Produit;
+import main.java.fr.miage.agents.api.model.Produit;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import java.util.ArrayList;

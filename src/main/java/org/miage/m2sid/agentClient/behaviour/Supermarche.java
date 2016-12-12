@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import fr.miage.agents.api.message.recherche.Rechercher;
-import fr.miage.agents.api.message.recherche.ResultatRecherche;
-import fr.miage.agents.api.message.relationclientsupermarche.Achat;
-import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
-import fr.miage.agents.api.model.Produit;
+import main.java.fr.miage.agents.api.message.recherche.Rechercher;
+import main.java.fr.miage.agents.api.message.recherche.ResultatRecherche;
+import main.java.fr.miage.agents.api.message.relationclientsupermarche.Achat;
+import main.java.fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
+import main.java.fr.miage.agents.api.model.Produit;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

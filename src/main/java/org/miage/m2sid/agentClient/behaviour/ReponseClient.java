@@ -1,16 +1,16 @@
 package org.miage.m2sid.agentClient.behaviour;
 
-import fr.miage.agents.api.message.Message;
-import fr.miage.agents.api.message.TypeMessage;
+import main.java.fr.miage.agents.api.message.Message;
+import main.java.fr.miage.agents.api.message.TypeMessage;
 import java.util.HashMap;
 
-import fr.miage.agents.api.message.interClients.DemandeEchange;
-import fr.miage.agents.api.message.interClients.ReponseEchange;
-import fr.miage.agents.api.message.recherche.Rechercher;
-import fr.miage.agents.api.message.recherche.ResultatRecherche;
-import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
-import fr.miage.agents.api.model.Categorie;
-import fr.miage.agents.api.model.Produit;
+import main.java.fr.miage.agents.api.message.interClients.DemandeEchange;
+import main.java.fr.miage.agents.api.message.interClients.ReponseEchange;
+import main.java.fr.miage.agents.api.message.recherche.Rechercher;
+import main.java.fr.miage.agents.api.message.recherche.ResultatRecherche;
+import main.java.fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
+import main.java.fr.miage.agents.api.model.Categorie;
+import main.java.fr.miage.agents.api.model.Produit;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CompositeBehaviour;

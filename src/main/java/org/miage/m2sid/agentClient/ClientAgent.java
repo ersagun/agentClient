@@ -1,6 +1,6 @@
 package org.miage.m2sid.agentClient;
 
-import fr.miage.agents.api.model.Produit;
+import main.java.fr.miage.agents.api.model.Produit;
 import java.util.Map;
 
 import org.miage.m2sid.agentClient.behaviour.TrouverSupermarcheBehaviour;

@@ -2,10 +2,10 @@ package org.miage.m2sid.agentClient.behaviour;
 
 import java.util.HashMap;
 
-import fr.miage.agents.api.message.interClients.DemandeEchange;
-import fr.miage.agents.api.message.interClients.ReponseEchange;
-import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
-import fr.miage.agents.api.model.Produit;
+import main.java.fr.miage.agents.api.message.interClients.DemandeEchange;
+import main.java.fr.miage.agents.api.message.interClients.ReponseEchange;
+import main.java.fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
+import main.java.fr.miage.agents.api.model.Produit;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
