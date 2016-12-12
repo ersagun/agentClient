@@ -176,6 +176,8 @@ public class RoutineEbdomadaireBehaviour extends OneShotBehaviour {
                 if (clientAgent.getProduitEchange().get(Produit.idProduit) == 0) {
                     clientAgent.getProduitEchange().remove(Produit.idProduit);
                 }
+                
+                
 
             }
             // TO/!\Impossible/!\DO echanger les produits 
